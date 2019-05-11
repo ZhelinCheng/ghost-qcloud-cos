@@ -64,6 +64,18 @@ class QCloudCustomAdapter extends BaseAdapter {
     })
   }
 
+  generatePushKey (file) {
+    const date = new Date()
+    let YY = date.getFullYear()
+    let MM = date.getMonth() + 1
+
+    if (MM < 9) {
+      MM = '0' + MM
+    }
+
+    return `/ghost/content/images/${YY}/${MM}/${file.filename}${file.ext}`
+  }
+
   serve () {
     return function customServe (req, res, next) {
       next()
