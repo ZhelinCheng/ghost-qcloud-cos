@@ -8,7 +8,6 @@ const COS = require('cos-nodejs-sdk-v5')
 const BaseAdapter = require('ghost-storage-base')
 const RE = /(.*)(?=\/ghost\/content)/
 
-
 class QCloudCustomAdapter extends BaseAdapter {
   constructor (config) {
     super()
@@ -70,8 +69,8 @@ class QCloudCustomAdapter extends BaseAdapter {
     let YY = date.getFullYear()
     let MM = date.getMonth() + 1
     if (MM <= 9) { MM = '0' + MM }
-
-    return `/ghost/content/images/${YY}/${MM}/${file.name.replace(/[^\x00-\xff]/g, '')}`
+    // return `/ghost/content/images/${YY}/${MM}/${file.name.replace(/[^\x00-\xff]/g, '')}`
+    return `/ghost/content/images/${YY}/${MM}/${file.filename.substring(0, 16)}${file.ext}`
   }
 
   serve () {
