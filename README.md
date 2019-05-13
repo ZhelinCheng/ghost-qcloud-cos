@@ -1,5 +1,5 @@
 # Ghost Tencent Cloud COS Storage
-This Ghost custom storage module allows you to store media file with Tencent Cloud OSS instead of storing at local machine.
+This Ghost custom storage module allows you to store media file with Tencent Cloud COS instead of storing at local machine.
 
 ## Installation
 ### Via Git
