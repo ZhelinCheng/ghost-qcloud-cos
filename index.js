@@ -6,6 +6,8 @@
 'use strict'
 const COS = require('cos-nodejs-sdk-v5')
 const BaseAdapter = require('ghost-storage-base')
+const RE = /(.*)(?=\/ghost\/content)/
+
 
 class QCloudCustomAdapter extends BaseAdapter {
   constructor (config) {
@@ -21,15 +23,14 @@ class QCloudCustomAdapter extends BaseAdapter {
     })
   }
 
-  exists (fileName) {
-    let key = this.baseUrl
-      ? fileName.replace(this.baseUrl, '')
-      : fileName.replace(/.*\.com\//, '')
+  exists (fileName, targetDir) {
+    const filePath = path.join(targetDir || this.storagePath, fileName)
+    const Key = filePath.replace(RE, '')
 
     return new Promise((resolve, reject) => {
       this.cos.headObject({
         ...this.baseParams,
-        key
+        Key
       }, (err, data) => {
         if (err) {
           err.statusCode
@@ -56,7 +57,7 @@ class QCloudCustomAdapter extends BaseAdapter {
         } else {
           let url = this.baseUrl
             ? data.Location.replace(/.*\.com\//, this.baseUrl)
-            : data.Location
+            : '//' + data.Location
 
           resolve(url)
         }
@@ -68,12 +69,9 @@ class QCloudCustomAdapter extends BaseAdapter {
     const date = new Date()
     let YY = date.getFullYear()
     let MM = date.getMonth() + 1
+    if (MM <= 9) { MM = '0' + MM }
 
-    if (MM < 9) {
-      MM = '0' + MM
-    }
-
-    return `/ghost/content/images/${YY}/${MM}/${file.filename}${file.ext}`
+    return `/ghost/content/images/${YY}/${MM}/${file.name.replace(/[^\x00-\xff]/g, '')}`
   }
 
   serve () {
@@ -101,20 +99,24 @@ class QCloudCustomAdapter extends BaseAdapter {
   }
 
   read (options) {
-    options.path = (options.path || '').replace(/\/$|\\$/, '')
+    const Key = options.path.replace(RE, '')
 
     return new Promise((resolve, reject) => {
       this.cos.getObject({
-        ...this.bsseParams,
-        key: options.path
-      }, function (err, data) {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(data.body)
+        ...this.baseParams,
+        Key
+      }, (err, data) => {
+        if (err || data.error) {
+          return reject(new Error(`
+          Could not read image \n ${Key}
+          error: ${JSON.stringify(err)}
+          response: ${JSON.stringify(data)}
+          `))
         }
+        resolve(data.Body)
       })
     })
+
   }
 }
 
