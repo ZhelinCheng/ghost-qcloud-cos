@@ -45,6 +45,23 @@ npm i
 
 In your `config.[env].json` file, you'll need to add a new storage block to whichever environment you want to change:
 
+### NPM
+```
+{
+  "storage": {
+    "active": "cos-store",
+    "cos-store": {
+      "baseUrl": "Base Url(Allowed to be empty)",
+      "SecretId": "Secret Id",
+      "SecretKey": "Secret Key",
+      "Bucket": "xxxx-123456",
+      "Region": "ap-chengdu"
+    }
+  }
+}
+```
+
+### GIT
 ```
 {
   "storage": {
