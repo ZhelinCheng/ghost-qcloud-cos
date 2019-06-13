@@ -17,7 +17,7 @@ This Ghost custom storage module allows you to store media file with Tencent Clo
   mkdir -p content/adapters/storage
   ```
   
- - Create a script named "oss-store.js", content as follow:
+ - Create a script named "cos-store.js", content as follow:
  
  ```javascript
 //  content/adapters/storage/cos-store.js
