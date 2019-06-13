@@ -2,6 +2,28 @@
 This Ghost custom storage module allows you to store media file with Tencent Cloud COS instead of storing at local machine.
 
 ## Installation
+
+### Via NPM
+
+- Install Oss storage module
+
+  ```
+  npm install ghost-qcloud-cos
+  ```
+  
+- Make the storage folder if it doesn't exist yet
+
+  ```
+  mkdir -p content/adapters/storage
+  ```
+  
+ - Create a script named "oss-store.js", content as follow:
+ 
+ ```javascript
+//  content/adapters/storage/cos-store.js
+module.exports = require('ghost-qcloud-cos');
+ ```
+
 ### Via Git
 In order to replace the storage module, the basic requirements are:
 
