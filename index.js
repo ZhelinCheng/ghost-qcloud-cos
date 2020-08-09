@@ -6,6 +6,7 @@
 'use strict'
 const COS = require('cos-nodejs-sdk-v5')
 const BaseAdapter = require('ghost-storage-base')
+const URL = require('url')
 // const RE = /(.*)(?=\/ghost\/content)/
 
 class QCloudCustomAdapter extends BaseAdapter {
@@ -27,8 +28,10 @@ class QCloudCustomAdapter extends BaseAdapter {
 
   exists (fileName, targetDir) {
     const filePath = path.join(targetDir || this.storagePath, fileName)
-    const RE = new RegExp(`(.*)(?=${this.basePath})`)
-    const Key = filePath.replace(RE, '')
+    /* const RE = new RegExp(`(.*)(?=${this.basePath})`)
+    const Key = filePath.replace(RE, '') */
+    const Key = URL.parse(filePath).pathname
+
 
     return new Promise((resolve, reject) => {
       this.cos.headObject({
@@ -107,8 +110,8 @@ class QCloudCustomAdapter extends BaseAdapter {
   }
 
   read (options) {
-    const RE = new RegExp(`(.*)(?=${this.basePath})`)
-    const Key = options.path.replace(RE, '')
+    // const Key = options.path.replace(this.baseUrl, '')
+    const Key = URL.parse(options.path).pathname
 
     return new Promise((resolve, reject) => {
       this.cos.getObject({
