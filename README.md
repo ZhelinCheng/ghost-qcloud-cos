@@ -5,7 +5,7 @@ This Ghost custom storage module allows you to store media file with Tencent Clo
 
 ### Via NPM
 
-- Install Oss storage module
+- Install COS storage module
 
   ```
   npm install ghost-qcloud-cos
@@ -46,12 +46,14 @@ npm i
 In your `config.[env].json` file, you'll need to add a new storage block to whichever environment you want to change:
 
 ### NPM
-```
+```json
 {
   "storage": {
     "active": "cos-store",
     "cos-store": {
       "baseUrl": "Base Url(Allowed to be empty)",
+      "basePath": "图片存放路径，不填写默认为/ghost/content/images/",
+      "rename": "是否重命名为MD5文件名，布尔值，默认为false",
       "SecretId": "Secret Id",
       "SecretKey": "Secret Key",
       "Bucket": "xxxx-123456",
@@ -68,6 +70,8 @@ In your `config.[env].json` file, you'll need to add a new storage block to whic
     "active": "ghost-qcloud-cos",
     "ghost-qcloud-cos": {
       "baseUrl": "Base Url(Allowed to be empty)",
+      "basePath": "图片存放路径，不填写默认为/ghost/content/images/",
+      "rename": "是否重命名为MD5文件名，布尔值，默认为false",
       "SecretId": "Secret Id",
       "SecretKey": "Secret Key",
       "Bucket": "xxxx-123456",

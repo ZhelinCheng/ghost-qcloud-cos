@@ -16,6 +16,9 @@ class QCloudCustomAdapter extends BaseAdapter {
       Region: config.Region
     }
     this.baseUrl = config.baseUrl
+    this.basePath = config.basePath || '/ghost/content/images/'
+    this.rename = config.rename || false
+
     this.cos = new COS({
       SecretId: config.SecretId,
       SecretKey: config.SecretKey
@@ -69,8 +72,13 @@ class QCloudCustomAdapter extends BaseAdapter {
     let YY = date.getFullYear()
     let MM = date.getMonth() + 1
     if (MM <= 9) { MM = '0' + MM }
-    // return `/ghost/content/images/${YY}/${MM}/${file.name.replace(/[^\x00-\xff]/g, '')}`
-    return `/ghost/content/images/${YY}/${MM}/${file.filename.substring(0, 16)}${file.ext}`
+
+    if (this.rename) {
+      return `${this.basePath}${YY}/${MM}/${file.filename.substring(0, 16)}${file.ext}`
+    } else {
+      return `${this.basePath}${YY}/${MM}/${file.name}`
+    }
+    // return `/ghost/content/images/${YY}/${MM}/${file.name.replace(/[^\x00-\xff]/g, '')}` 
   }
 
   serve () {
