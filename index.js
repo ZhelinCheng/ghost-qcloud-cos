@@ -6,7 +6,7 @@
 'use strict'
 const COS = require('cos-nodejs-sdk-v5')
 const BaseAdapter = require('ghost-storage-base')
-const RE = /(.*)(?=\/ghost\/content)/
+// const RE = /(.*)(?=\/ghost\/content)/
 
 class QCloudCustomAdapter extends BaseAdapter {
   constructor (config) {
@@ -27,6 +27,7 @@ class QCloudCustomAdapter extends BaseAdapter {
 
   exists (fileName, targetDir) {
     const filePath = path.join(targetDir || this.storagePath, fileName)
+    const RE = new RegExp(`(.*)(?=${this.basePath})`)
     const Key = filePath.replace(RE, '')
 
     return new Promise((resolve, reject) => {
@@ -106,6 +107,7 @@ class QCloudCustomAdapter extends BaseAdapter {
   }
 
   read (options) {
+    const RE = new RegExp(`(.*)(?=${this.basePath})`)
     const Key = options.path.replace(RE, '')
 
     return new Promise((resolve, reject) => {

@@ -1,11 +1,11 @@
 {
   "name": "ghost-qcloud-cos",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "This Ghost custom storage module allows you to store media file with Tencent Cloud OSS instead of storing at local machine.",
   "main": "index.js",
   "dependencies": {
-    "cos-nodejs-sdk-v5": "^2.5.9",
-    "ghost-storage-base": "^0.0.3"
+    "cos-nodejs-sdk-v5": "^2.6.2",
+    "ghost-storage-base": "^0.0.5"
   },
   "devDependencies": {},
   "scripts": {

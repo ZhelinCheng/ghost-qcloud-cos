@@ -64,7 +64,7 @@ In your `config.[env].json` file, you'll need to add a new storage block to whic
 ```
 
 ### GIT
-```
+```json
 {
   "storage": {
     "active": "ghost-qcloud-cos",
