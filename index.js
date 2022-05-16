@@ -12,10 +12,12 @@ const URL = require('url')
 class QCloudCustomAdapter extends BaseAdapter {
   constructor (config) {
     super()
+  
     this.baseParams = {
       Bucket: config.Bucket,
       Region: config.Region
     }
+
     this.baseUrl = config.baseUrl
     this.basePath = config.basePath || '/ghost/content/images/'
     this.rename = config.rename || false
@@ -27,11 +29,10 @@ class QCloudCustomAdapter extends BaseAdapter {
   }
 
   exists (fileName, targetDir) {
-    const filePath = path.join(targetDir || this.storagePath, fileName)
-    /* const RE = new RegExp(`(.*)(?=${this.basePath})`)
-    const Key = filePath.replace(RE, '') */
-    const Key = URL.parse(filePath).pathname
+    const fileUrl = path.join(targetDir || this.storagePath, fileName)
 
+    const url = new URL(fileUrl);
+    const Key = url.pathname
 
     return new Promise((resolve, reject) => {
       this.cos.headObject({
@@ -78,11 +79,10 @@ class QCloudCustomAdapter extends BaseAdapter {
     if (MM <= 9) { MM = '0' + MM }
 
     if (this.rename) {
-      return `${this.basePath}${YY}/${MM}/${file.filename.substring(0, 16)}${file.ext}`
+      return `${this.basePath}${YY}/${MM}/${file.filename.replace(/\s+/img, '').substring(0, 16)}${file.ext}`
     } else {
       return `${this.basePath}${YY}/${MM}/${file.name}`
     }
-    // return `/ghost/content/images/${YY}/${MM}/${file.name.replace(/[^\x00-\xff]/g, '')}` 
   }
 
   serve () {
@@ -111,7 +111,7 @@ class QCloudCustomAdapter extends BaseAdapter {
 
   read (options) {
     // const Key = options.path.replace(this.baseUrl, '')
-    const Key = URL.parse(options.path).pathname
+    const Key = new URL(options.path).pathname
 
     return new Promise((resolve, reject) => {
       this.cos.getObject({
