@@ -12,19 +12,34 @@ const URL = require('url')
 class QCloudCustomAdapter extends BaseAdapter {
   constructor (config) {
     super()
+
+    let cfg = config || {};
+
+    if (!config || !config?.baseUrl) {
+      const env = process.env;
+      cfg = {
+        "baseUrl": env.GHOST_STORAGE_ADAPTER_COS_BASEURL,
+        "basePath": env.GHOST_STORAGE_ADAPTER_COS_BASEPATH,
+        "rename": env.GHOST_STORAGE_ADAPTER_COS_RENAME === 'true',
+        "SecretId": env.GHOST_STORAGE_ADAPTER_COS_SECRETID,
+        "SecretKey": env.GHOST_STORAGE_ADAPTER_COS_SECRETKEY,
+        "Bucket": env.GHOST_STORAGE_ADAPTER_COS_BUCKET,
+        "Region": env.GHOST_STORAGE_ADAPTER_COS_REGION
+      }
+    }
   
     this.baseParams = {
-      Bucket: config.Bucket,
-      Region: config.Region
+      Bucket: cfg.Bucket,
+      Region: cfg.Region
     }
 
-    this.baseUrl = config.baseUrl
-    this.basePath = config.basePath || '/ghost/content/images/'
-    this.rename = config.rename || false
+    this.baseUrl = cfg.baseUrl
+    this.basePath = cfg.basePath || '/ghost/content/images/'
+    this.rename = cfg.rename || false
 
     this.cos = new COS({
-      SecretId: config.SecretId,
-      SecretKey: config.SecretKey
+      SecretId: cfg.SecretId,
+      SecretKey: cfg.SecretKey
     })
   }
 
