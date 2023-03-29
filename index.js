@@ -147,5 +147,5 @@ class QCloudCustomAdapter extends BaseAdapter {
   }
 }
 
+exports.default = QCloudCustomAdapter;
 module.exports = QCloudCustomAdapter;
-export default QCloudCustomAdapter
